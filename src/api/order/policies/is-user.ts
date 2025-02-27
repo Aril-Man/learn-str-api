@@ -16,8 +16,12 @@ export default async (policyContext, config, { strapi }) => {
       populate : 'user'
     });
 
+    if (!order) {
+      throw new policiesError.NotFoundError('Order not found');
+    }
+
     if (order.user.id !== user.id) {
-      throw new policiesError.NotFoundError('You are not the owner of this order');
+      throw new policiesError.ValidationError('You are not the owner of this order');
     }
 
     return true;
